@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark">
+  <title>신준호 · IT 포트폴리오</title>
+  <meta name="description" content="신준호의 포트폴리오 · 프로젝트 · 기술 스택 · 경력">
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --panel:#111318;
+      --text:#e7e9ee;
+      --muted:#a1a7b3;
+      --brand:#6aa6ff;
+      --brand-2:#9c7cff;
+      --ok:#2ecc71;
+      --warn:#f1c40f;
+      --danger:#ff6b6b;
+      --ring: 0 0 0 3px rgba(106,166,255,.25);
+      --radius: 16px;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+      --max: 1080px;
+    }
+    /* Light theme if user prefers */
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f8fb; --panel:#ffffff; --text:#1b212c; --muted:#5d6472; --brand:#2a66ff; --brand-2:#7a3cff; --shadow: 0 10px 25px rgba(10,20,40,.08);
+      }
+    }
+    /* Dark override by data-theme */
+    [data-theme="dark"]{ --bg:#0b0c10; --panel:#111318; --text:#e7e9ee; --muted:#a1a7b3; --brand:#6aa6ff; --brand-2:#9c7cff; --shadow: 0 10px 25px rgba(0,0,0,.35);}
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Apple SD Gothic Neo, sans-serif}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;height:auto;border-radius:12px}
+    .container{max-width:var(--max);margin-inline:auto;padding:32px 20px}
+
+    /* Header & Nav */
+    header{position:sticky;top:0;backdrop-filter:saturate(180%) blur(12px);background:color-mix(in oklab, var(--bg) 85%, transparent);z-index:50;border-bottom:1px solid color-mix(in oklab, var(--text) 12%, transparent)}
+    .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:10px 20px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+    .nav a{color:var(--text)}
+    .nav .links{display:flex;gap:14px;flex-wrap:wrap}
+    .nav .links a{padding:8px 10px;border-radius:10px}
+    .nav .links a.active,.nav .links a:hover{background:color-mix(in oklab,var(--brand) 20%, transparent)}
+    .nav .right{display:flex;gap:8px;align-items:center}
+    .btn{border:1px solid color-mix(in oklab, var(--text) 16%, transparent);background:var(--panel);color:var(--text);padding:8px 12px;border-radius:12px;box-shadow:var(--shadow)}
+    .btn:hover{outline:var(--ring)}
+
+    /* Hero */
+    .hero{padding:56px 0}
+    .grid{display:grid;grid-template-columns:1fr;gap:24px}
+    @media (min-width: 900px){ .grid{grid-template-columns:1.2fr .8fr} }
+    .card{background:var(--panel);border:1px solid color-mix(in oklab, var(--text) 10%, transparent);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+    h1,h2,h3{line-height:1.25;margin:0 0 12px}
+    h1{font-size:44px}
+    h2{font-size:28px;margin-top:6px}
+    .muted{color:var(--muted)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .chip{font-size:13px;padding:6px 10px;border:1px solid color-mix(in oklab, var(--text) 16%, transparent);border-radius:999px;background:color-mix(in oklab, var(--panel) 70%, var(--bg));}
+
+    /* Sections */
+    section{scroll-margin-top:90px}
+    .section-title{display:flex;align-items:center;gap:12px;margin:28px 0 16px}
+    .section-title .bar{width:8px;height:24px;border-radius:6px;background:linear-gradient(120deg,var(--brand),var(--brand-2))}
+
+    /* Two-column layouts */
+    .two-col{display:grid;grid-template-columns:1fr;gap:20px}
+    @media (min-width: 820px){ .two-col{grid-template-columns: .85fr 1.15fr} }
+
+    /* Timelines */
+    .timeline{border-left:2px dashed color-mix(in oklab, var(--text) 20%, transparent);padding-left:18px;display:grid;gap:18px}
+    .t-item h3{margin:0}
+    .t-item .when{font-weight:600;color:var(--brand)}
+    .t-item .where{font-weight:600}
+
+    /* Projects */
+    .cards{display:grid;grid-template-columns:1fr;gap:16px}
+    @media (min-width: 760px){ .cards{grid-template-columns: repeat(2,1fr)} }
+    @media (min-width: 1140px){ .cards{grid-template-columns: repeat(3,1fr)} }
+    .p-card .meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+    .p-card .actions{display:flex;gap:10px;margin-top:10px}
+    .badge{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:color-mix(in oklab, var(--brand) 18%, transparent);margin-right:6px}
+
+    /* Footer */
+    footer{padding:36px 20px;color:var(--muted);text-align:center}
+
+    /* Small helpers */
+    .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .mb8{margin-bottom:8px}.mt8{margin-top:8px}.mt16{margin-top:16px}.mb16{margin-bottom:16px}
+    .icon{width:18px;height:18px;display:inline-block;background:linear-gradient(120deg,var(--brand),var(--brand-2));mask: var(--mask) no-repeat center/contain;-webkit-mask: var(--mask) no-repeat center/contain}
+    .i-mail{--mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5Z"/></svg>')}
+    .i-github{--mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.2c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.1-.76.09-.74.09-.74 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.84 1.32 3.53 1.01.11-.79.42-1.32.76-1.62-2.67-.3-5.48-1.34-5.48-5.95 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.5.12-3.12 0 0 1.01-.32 3.3 1.23A11.5 11.5 0 0 1 12 6.82c1.02.01 2.06.14 3.03.4 2.3-1.55 3.3-1.23 3.3-1.23.67 1.62.26 2.82.13 3.12.77.85 1.24 1.91 1.24 3.22 0 4.62-2.82 5.64-5.51 5.94.43.38.82 1.12.82 2.25v3.34c0 .33.21.7.82.58A12 12 0 0 0 12 .5Z"/></svg>')}
+    .i-link{--mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M10.59 13.41a1.996 1.996 0 0 0 2.82 0l4.59-4.59a2 2 0 1 0-2.83-2.83l-1.59 1.59"/><path d="M13.41 10.59a1.996 1.996 0 0 0-2.82 0l-4.59 4.59a2 2 0 1 0 2.83 2.83l1.59-1.59"/></svg>')}
+
+    /* Contact form mock */
+    input,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid color-mix(in oklab, var(--text) 16%, transparent);background:var(--panel);color:var(--text)}
+    label{font-weight:600}
+  </style>
+</head>
+<body>
+<header>
+  <nav class="nav container" aria-label="주요 메뉴">
+    <div class="brand"><span class="dot"></span><a href="#home">신준호</a></div>
+    <div class="links" id="navLinks">
+      <a href="#about">소개</a>
+      <a href="#education">학력</a>
+      <a href="#experience">경력</a>
+      <a href="#skills">기술</a>
+      <a href="#projects">프로젝트</a>
+      <a href="#courses">교육</a>
+      <a href="#interests">관심사</a>
+      <a href="#contact">연락</a>
+    </div>
+    <div class="right">
+      <button class="btn" id="themeToggle" aria-label="테마 전환">🌓</button>
+      <a class="btn" href="#contact">Hire</a>
+    </div>
+  </nav>
+</header>
+
+<main id="home" class="container">
+  <!-- HERO -->
+  <section class="hero grid">
+    <div class="card">
+      <h1>안녕하세요, <span style="background:linear-gradient(120deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent">신준호</span>입니다.</h1>
+      <p class="muted">제조업종에서 IT 시스템 운영과 전산관리 업무를 담당해왔습니다.<br> 기업의 안정적이고 효율적인 시스템을 만들고,<br> 기술을 통해 사용자에게 더 나은 경험과 가치를 전하는 것을 지향합니다. </p>
+      <div class="chips" aria-label="키워드">
+        <span class="chip">Python</span>
+        <span class="chip">MS-SQL</span>
+        <span class="chip">VMWARE</span>
+        <span class="chip">AWS</span>
+        <span class="chip">Windows</span>
+        <span class="chip">Linux</span>
+		<span class="chip">CCNA</span>
+      </div>
+      <div class="row mt16">
+        <a class="btn" href="mailto:icanz1956@hanmail.net><span class="icon i-mail"></span> 이메일</a>
+        <a class="btn" href="https://github.com/your-id" target="_blank" rel="noreferrer noopener"><span class="icon i-github"></span> GitHub</a>
+        <a class="btn" href="#projects"><span class="icon i-link"></span> 대표 프로젝트</a>
+      </div>
+    </div>
+<div class="card" aria-label="프로필">
+  <div class="slideshow">
+    <img src="https://github.com/sjh1433/profileMe/blob/main/Me1.jpg?raw=true" class="active">
+    <img src="https://github.com/sjh1433/profileMe/blob/main/Me2.jpg?raw=true">
+    <img src="https://github.com/sjh1433/profileMe/blob/main/Me3.jpg?raw=true">
+    <img src="https://github.com/sjh1433/profileMe/blob/main/Me4.jpg?raw=true">
+  </div>
+</div>
+
+<style>
+.slideshow {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  aspect-ratio: 800 / 600;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.slideshow img {
+  position: absolute;
+  width: 800px;
+  height: 600px;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.slideshow img.active {
+  opacity: 1;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = document.querySelectorAll('.slideshow img');
+  let index = 0;
+  setInterval(() => {
+    slides[index].classList.remove('active');
+    index = (index + 1) % slides.length;
+    slides[index].classList.add('active');
+  }, 3000);
+});
+</script>
+
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-title"><span class="bar"></span><h2>소개</h2></div>
+    <div class="two-col">
+      <div class="card">
+        <p>제조 현장 경험을 기반으로 비즈니스와 현업을<br> 이해하는 전산 전문가입니다.<br>
+           프로세스 분석,개선부터 ERP·MES 구축,인프라·보안<br> 전 과정을 주도하며 기업의 디지털 전환을<br> 이끌었습니다.<br>
+           시스템은 단순한 도구가 아니라, 현장의 문제를<br> 해결하고 가치를 창출하는 수단입니다.<br>
+           기술을 통해 더 효율적이고 안전한 업무 환경을<br> 만드는 데 집중합니다.</p>
+        <ul>
+          <li>관심 분야: AI 기반 제조 시스템 고도화,ERP·MES 개선,네트워크·보안 운영</li>
+          <li>관심 스택: Python,FastAPI,VMWARE,AWS</li>
+          <li>언어: 한국어(네이티브), 영어(업무 의사소통)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>요약</h3>
+        <p class="muted">정량적 지표:</p>
+        <ul>
+          <li>ERP 시스템 구축 및 지속적 커스터마이징으로<br> 
+		  사용자 만족도 +85% 향상 </li>  
+          <li>재무·회계 모듈 개선으로 매출·원가 데이터 정합성 35% 향상,<br> 감사 대응 리드타임 20% 단축</li>
+          <li>MES 구축을 통해 생산 계획 대비 실적 정확도 80% 달성,<br> 불량 재처리율 20%↓, 설비 가동률 18%</li>
+          <li>백업·재해복구 체계 구축으로 데이터 손실 0건,<br> 복구 리드타임 40% 단축 </li>
+          <li>네트워크 개선으로 장애감축률 45% 달성,<br> 실시간 설비 통신 안정성 99.8% 확보 </li>
+
+		
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+
+<section id="education">
+  <div class="section-title"><span class="bar"></span><h2>학력</h2></div>
+  <div class="card">
+    <div class="timeline">
+      <div class="t-item">
+        <div class="when">2003.02 — 2007.02</div>
+        <h3 class="where">대구대학교 · 의무행정 (전문학사)</h3>
+        <p class="muted">EMR, HIS, ERP</p>
+      </div>
+      <div class="t-item">
+        <div class="when">2010.01 — 2012.01</div>
+        <h3 class="where">KG 에듀원 아이티뱅크 </h3>
+        <p class="muted">프로그래밍 기초, 알고리즘, 네트워크 보안, 시스템 보안, JAVA, C++</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-title"><span class="bar"></span><h2>경력</h2></div>
+  <div class="card">
+    <div class="timeline">
+
+      <div class="t-item">
+        <div class="when">2025.06 — 현재</div>
+        <h3 class="where">(주)시아스 · 전산관리 차장</h3>
+        <p>주요 업무: 식품 제조업 ERP/POP관리, IT인프라 구축 및 운영,정보보안 관리, 헬프데스크</p>
+        <ul class="muted">
+          <li>VLAN구축 보안 수준 강화 및 네트워크 장애 근본 해소</li>
+          <li>데이터 백업 체계 개선 및 보안 정책 강화 주도, 안정적이고 신뢰성 높은 정보 보호 환경 구축</li>
+          <li>더존 아마란스10 시스템 안정화 리딩, 그룹웨어·메일·회계 등 전사 업무 솔루션 운영 효율성 향상</li>
+          <li>서버·네트워크 인프라 구축 및 장애 대응</li>
+        </ul>
+      </div>
+
+      <div class="t-item">
+        <div class="when">2016.11 — 2025.06</div>
+        <h3 class="where">(주)삼화테크 · 전산관리 차장</h3>
+        <p>주요 업무: 자동차부품 제조업 ERP/MES 구축 및 운영, IT인프라 구축 및 운영,정보보안 관리, 헬프데스크</p>
+		<ul class="muted">
+          <li>ERP시스템 구축 및 고도화 사업 총괄PM</li>
+          <li>MES시스템 구축 및 고도화 사업 총괄PM</li>
+          <li>전사 업무 프로세스 디지털 전환 기획 및 실행 총괄</li>
+		  <li>서버·네트워크 인프라 구축 및 장애 대응</li>
+        </ul>
+      <div class="t-item">
+        <div class="when">2012.04 — 2016.10</div>
+        <h3 class="where">(주)이노씰 · 품질,전산관리 대리</h3>
+        <p>주요 업무: 자동차부품 제조업 품질관리 업무 및 전산관리 </p>
+        <ul class="muted">
+          <li>서버·네트워크 인프라 구축 및 장애 대응</li>
+          <li>POP시스템 관리 및 개선 </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-title"><span class="bar"></span><h2>기술 스택</h2></div>
+    <div class="two-col">
+      <div class="card">
+        <h3>주요</h3>
+        <p>
+          <span class="badge">CCNA</span>
+          <span class="badge">VMWARE</span>
+          <span class="badge">가상화</span>
+          <span class="badge">정보보안</span>
+          <span class="badge">SQL</span>
+          <span class="badge">PM</span>
+          <span class="badge">AWS</span>
+        </p>
+        <h3 class="mt16">도구</h3>
+        <p>
+          <span class="badge">Git/GitHub</span>
+          <span class="badge">PowerShell</span>
+          <span class="badge">Linux</span>
+          <span class="badge">Zabbix</span>
+          <span class="badge">Wireshark</span>
+        </p>
+      </div>
+      <div class="card">
+        <h3>기술 레벨</h3>
+        <ul class="muted">
+          <li><strong>MES/ERP/POP/SPC:</strong> 상 — 전산 시스템 통합·운영 경험 다수</li>
+          <li><strong>Windows/Infra:</strong> 상 — 서버·네트워크 구성, 자동화 운영</li>
+          <li><strong>네트워크/보안관리:</strong> 중상 — 방화벽,스위치,보안솔루션</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-title"><span class="bar"></span><h2>프로젝트</h2></div>
+  <div class="cards">
+
+    <article class="card p-card">
+      <div class="slideshow">
+        <img src="https://github.com/sjh1433/profileErp/blob/main/ERP1.jpg?raw=true" class="active">
+        <img src="https://github.com/sjh1433/profileErp/blob/main/ERP2.JPG?raw=true">
+        <img src="https://github.com/sjh1433/profileErp/blob/main/ERP3.jpg?raw=true">
+        <img src="https://github.com/sjh1433/profileErp/blob/main/ERP4.png?raw=true">
+      </div>
+      <div class="meta">2017 · 팀 · 인프라</div>
+      <h3>ERP시스템 구축 및 고도화</h3>
+      <p>문제: 외부 업체 종속성과 낮은 대응력, 회계 모듈 불일치, 복잡한 UI로 인한 사용자 불편 결과: ERP 시스템 신규 구축 지속적 커스터마이징으로 사용자 만족도, 재무·회계 데이터 정합성 향상</p>
+      <div>
+        <span class="badge">C++</span>
+        <span class="badge">MS-SQL</span>
+      </div>
+      <div class="actions"></div>
+    </article>
+
+    <article class="card p-card">
+      <div class="slideshow">
+        <img src="https://raw.githubusercontent.com/sjh1433/profileMes/main/1MES2.JPG" class="active">
+        <img src="https://github.com/sjh1433/profileMes/blob/main/2MES.JPG?raw=true">
+        <img src="https://github.com/sjh1433/profileMes/blob/main/3MES.jpg?raw=true">
+        <img src="https://github.com/sjh1433/profileMes/blob/main/4MES.jpg?raw=true">
+      </div>
+      <div class="meta">2019 · 팀 · 인프라</div>
+      <h3>MES시스템 구축 및 고도화</h3>
+      <p>문제: 수기 관리로 오류 다발, LOT관리 미흡, 재공재 결과: 재고 오차 60% 감소, 보고 시간 80% 단축, 공정 효율 25% 향상</p>
+      <div>
+        <span class="badge">C#</span>
+        <span class="badge">MS-SQL</span>
+      </div>
+      <div class="actions"></div>
+    </article>
+
+
+
+  </div>
+</section>
+
+<style>
+.slideshow {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 600 / 360; 
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.slideshow img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.slideshow img.active {
+  opacity: 1;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const slideshows = document.querySelectorAll('.slideshow');
+  slideshows.forEach(show => {
+    const slides = show.querySelectorAll('img');
+    let index = 0;
+    setInterval(() => {
+      slides[index].classList.remove('active');
+      index = (index + 1) % slides.length;
+      slides[index].classList.add('active');
+    }, 3000); 
+  });
+});
+</script>
+
+
+
+  <!-- COURSES -->
+  <section id="courses">
+    <div class="section-title"><span class="bar"></span><h2>교육 이수</h2></div>
+    <div class="card">
+      <ul>
+        <li>전산학개론 (사외) · 6개월</li>
+        <li>데이터베이스 기초 및 SQL 실습 (사외) · 8시간</li>
+        <li>시스템 보안과 접근제어 개론 (사외) · 10시간</li>
+        <li>소프트웨어 개발 프로세스 이해 (사외) · 8시간</li>
+        <li>제조 IoT 데이터 수집 및 분석 (사외) · 4시간</li>
+        <li>공정 설비 모니터링 대시보드 구축 실습 (사외) · 4시간</li>
+        <li>스마트팩토리 개론 및 구축 사례 (사외) · 10시간</li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- INTERESTS -->
+  <section id="interests">
+    <div class="section-title"><span class="bar"></span><h2>관심사</h2></div>
+    <div class="card">
+      <p>AI 기술 트렌드와 하드웨어 아키텍처 발전에 관심이 많습니다.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-title"><span class="bar"></span><h2>연락</h2></div>
+    <div class="two-col">
+      <div class="card">
+        <form action="mailto:icanz1956@hanmail.net" method="post" enctype="text/plain">
+          <div class="mb16">
+            <label for="name">이름</label>
+            <input id="name" name="name" placeholder="성함" required>
+          </div>
+          <div class="mb16">
+            <label for="email">이메일</label>
+            <input id="email" name="email" type="email" placeholder="icanz1956@hanmail.net" required>
+          </div>
+          <div class="mb16">
+            <label for="msg">메시지</label>
+            <textarea id="msg" name="message" rows="5" placeholder="안녕하세요…"></textarea>
+          </div>
+          <button class="btn" type="submit">보내기</button>
+        </form>
+     \
+      </div>
+      <div class="card">
+        <h3>바로 연결</h3>
+        <p><span class="icon i-mail"></span> <a href="mailto:you@example.com">icanz1956@hanmail.net</a></p>
+        <p><span class="icon i-github"></span> <a href="https://github.com/your-id" target="_blank" rel="noreferrer noopener">github.com/sjh1433</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">© <span id="year"></span> 신준호 · All rights reserved.</div>
+</footer>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Theme toggle (persist)
+  const $root = document.documentElement;
+  const THEME_KEY = 'pref-theme';
+  const saved = localStorage.getItem(THEME_KEY);
+  if(saved){ $root.setAttribute('data-theme', saved); }
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const curr = $root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    $root.setAttribute('data-theme', curr);
+    localStorage.setItem(THEME_KEY, curr);
+  });
+
+  // Active link on scroll
+  const sections = [...document.querySelectorAll('main section[id]')];
+  const navLinks = [...document.querySelectorAll('#navLinks a')];
+  const byId = id => navLinks.find(a => a.getAttribute('href') === `#${id}`);
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = byId(e.target.id);
+        if(link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
